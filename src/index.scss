@@ -1,0 +1,61 @@
+@import 'globals';
+
+@include react-md-everything;
+
+html,
+body {
+  background: #ffffff;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/** Material design over write **/
+.md-full-width {
+  width: 100%;
+}
+
+.md-select-full-width {
+  width: 100%;
+  text-align: left;
+}
+
+.search-button {
+  width: 100px;
+  margin: 25px auto;
+}
+
+.login-button {
+  margin-bottom: 0;
+}
+
+.avatar {
+  width: 100px;
+  border-radius: 50px;
+}
+
+.avatar-lg {
+  width: 160px;
+  border-radius: 80px;
+}
+
+.search-result {
+}
+.search-item {
+  text-align: center;
+  padding: 4px 0;
+  margin: 8px;
+  background: #f9f9f9;
+}
+
+.search-item:hover {
+  background: #f4f4f4;
+  box-shadow: 0 0 4px #e1e1e1;
+  cursor: pointer;
+}
+
+.mega-nav.navbar-default .navbar-nav > li > a {
+  font-weight: 600;
+  line-height: 1.5em;
+  font-size: 1.1em;
+}
