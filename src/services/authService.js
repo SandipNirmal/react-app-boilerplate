@@ -1,4 +1,4 @@
-import * as axios from 'axios';
+// import * as axios from 'axios';
 
 /**
  * User authentication request
@@ -8,7 +8,16 @@ import * as axios from 'axios';
  * @returns {Object} http promise object
  */
 const authenticateUser = (username, pass) => {
-  return axios.post(`/users/login`, { username, pass });
+  // return axios.post(`/users/login`, { username, pass });
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        username: 'Sandip Nirmal',
+        loginToken: 'some#hashed#token#value'
+      });
+    }, 1500);
+  });
 };
 
 /**
@@ -17,8 +26,11 @@ const authenticateUser = (username, pass) => {
  * @returns {Object | Promise} http request Object
  */
 const logoutUser = () => {
-  const { username, loginToken } = getAuthInfo();
-  return axios.post('/users/logout', { username, loginToken });
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ data: 'success' }, 500);
+    });
+  });
 };
 
 /**
@@ -54,8 +66,8 @@ const removeAuthInfo = () => {
  * @returns {boolean}
  */
 const isAuthenticated = () => {
-  const { loginToken = '', profId = '' } = getAuthInfo();
-  return loginToken && profId;
+  const { username = '', loginToken = '' } = getAuthInfo();
+  return username && loginToken;
 };
 
 export {

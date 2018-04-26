@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import './App.css';
 
 import AppHeader from './components/common/header';
-import NavBar from './components/common/navbar';
-// import Spinner from './components/common/spinner';
 import Footer from './components/common/footer';
 
 import PublicRoutes from './components/routes/public';
@@ -15,7 +13,6 @@ import ProtectedRoutes from './components/routes/protected';
 const App = props => (
   <div>
     <AppHeader />
-    <NavBar />
     <ToastContainer />
     {props.isLoggedIn ? <ProtectedRoutes /> : <PublicRoutes />}
     <Footer />
@@ -23,6 +20,7 @@ const App = props => (
 );
 
 const mapStateToProps = ({ auth: { isLoggedIn } }) => {
+  console.log('props.isLoggedIn', isLoggedIn)
   return {
     isLoggedIn
   };

@@ -12,14 +12,6 @@ class Login extends Component {
     this.props.loginUser(values);
   };
 
-  // specifying verify callback function
-  verifyCallback = response => {
-    console.log(response);
-    this.setState({
-      captchaValidated: true
-    });
-  };
-
   render() {
     const {
       handleSubmit,
@@ -31,18 +23,18 @@ class Login extends Component {
     error && notifyError(error);
 
     return (
-      <div>
-        <div className="col-sm-12 col-md-12">
+      <div className="login-form">
+        <div>
           <h2>Log In to your Account</h2>
         </div>
-        <form className="form-style" onSubmit={handleSubmit(this.onSubmit)}>
+        <form onSubmit={handleSubmit(this.onSubmit)}>
           {error && (
             <div>
-              <h5 className="md-text--error">{error}</h5>
+              <h5>{error}</h5>
             </div>
           )}
-          <div className="form-line">
-            <div className="form-group">
+          <div>
+            <div>
               <label>User Name</label>
 
               <Field
@@ -56,7 +48,7 @@ class Login extends Component {
               />
             </div>
 
-            <div className="form-group">
+            <div>
               <label>Password</label>
               <Field
                 id="password"
@@ -69,7 +61,7 @@ class Login extends Component {
               />
             </div>
 
-            <div className="form-group">
+            <div>
               {fetching ? (
                 <CircularProgress id="login-progress" />
               ) : (
@@ -77,20 +69,14 @@ class Login extends Component {
                   raised
                   primary
                   type="submit"
-                  className="search-button login-button"
-                  disabled={
-                    pristine ||
-                    invalid ||
-                    fetching ||
-                    !this.state.captchaValidated
-                  }
+                  disabled={pristine || invalid || fetching}
                 >
                   Log In
                 </Button>
               )}
             </div>
 
-            <div className="checkbox">
+            <div>
               <Field
                 id="keepLoggedIn"
                 type="checkbox"

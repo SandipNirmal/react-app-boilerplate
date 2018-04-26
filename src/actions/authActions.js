@@ -20,7 +20,7 @@ export const loginUser = ({ username, password }) => {
       type: LOGIN,
       payload: authenticateUser(username, password)
     }).then(res => {
-      const userData = res.value.data.data;
+      const userData = res.value;
       saveAuthInfo(JSON.stringify(userData));
       return dispatch({
         type: LOGIN,
