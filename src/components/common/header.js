@@ -5,7 +5,7 @@ import AuthButton from "./authButton";
 const AppHeader = props => {
   return (
     <header>
-      <div className="container">
+      <div className="container header">
         <div>
           <a href="/">
             <h3> App Logo </h3>
