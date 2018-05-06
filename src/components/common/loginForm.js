@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import { Button, CircularProgress } from "react-md";
-import { Field, reduxForm } from "redux-form";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { Button, CircularProgress, TextField, Checkbox } from 'react-md';
+import { withFormik, Form } from 'formik';
+import Yup from 'yup';
+import { connect } from 'react-redux';
 
-import { notifyError } from "./../../services/toastService";
-import { renderTextField, renderCheckBox } from "./formElements";
-import { loginUser } from "./../../actions/index";
+import { notifyError } from './../../services/toastService';
+import { loginUser } from './../../actions/index';
 
 class Login extends Component {
   onSubmit = values => {
@@ -14,34 +14,42 @@ class Login extends Component {
 
   render() {
     const {
+      values,
+      errors,
+      touched,
+      handleBlur,
+      handleChange,
       handleSubmit,
-      invalid,
-      pristine,
-      auth: { fetching, error }
+      isSubmitting,
+      isValid
     } = this.props;
 
-    error && notifyError(error);
+    console.log('isValid', isValid);
+
+    // error && notifyError(error);
 
     return (
       <div className="login-form">
         <div>
           <h2>Log In to your Account</h2>
         </div>
-        <form onSubmit={handleSubmit(this.onSubmit)}>
-          {error && (
+        <Form onSubmit={handleSubmit}>
+          {/* {error && (
             <div>
               <h5>{error}</h5>
             </div>
-          )}
+          )} */}
           <div>
             <div>
               <label>User Name</label>
 
-              <Field
+              <TextField
                 id="email"
                 type="email"
                 name="username"
-                component={renderTextField}
+                value={values.username}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Enter Username"
                 errorText="This field is required."
@@ -50,11 +58,13 @@ class Login extends Component {
 
             <div>
               <label>Password</label>
-              <Field
+              <TextField
                 id="password"
                 type="password"
                 name="password"
-                component={renderTextField}
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 required
                 placeholder="Enter Password"
                 errorText="This field is required."
@@ -62,14 +72,14 @@ class Login extends Component {
             </div>
 
             <div>
-              {fetching ? (
+              {isSubmitting ? (
                 <CircularProgress id="login-progress" />
               ) : (
                 <Button
                   raised
                   primary
                   type="submit"
-                  disabled={pristine || invalid || fetching}
+                  disabled={!isValid || isSubmitting}
                 >
                   Log In
                 </Button>
@@ -77,42 +87,40 @@ class Login extends Component {
             </div>
 
             <div>
-              <Field
+              <Checkbox
                 id="keepLoggedIn"
                 type="checkbox"
                 name="keepLoggedIn"
-                component={renderCheckBox}
                 label="Keep me logged in"
               />
             </div>
           </div>
-        </form>
+        </Form>
       </div>
     );
   }
 }
 
-function validate(values) {
-  const errors = {};
+const loginForm = withFormik({
+  mapPropsToValues: props => ({ username: '', password: '' }),
+  validationSchema: Yup.object().shape({
+    username: Yup.string()
+      .email('Invalid email address')
+      .required('Email is required!'),
+    password: Yup.string().required('Password is required!')
+  }),
+  handleSubmit: (values, { props, setSubmitting }) => {
+    loginUser(values).then(
+      res => {
+        setSubmitting(false);
+      },
+      err => {
+        console.log(err);
+        setSubmitting(false);
+      }
+    );
+  },
+  displayName: 'LoginForm'
+})(Login);
 
-  if (!values.username) {
-    errors.username = "Email is required!";
-  }
-
-  if (!values.password) {
-    errors.password = "Password is required!";
-  }
-
-  return errors;
-}
-
-const mapStateToProps = ({ auth }) => {
-  return { auth };
-};
-
-export default connect(mapStateToProps, { loginUser })(
-  reduxForm({
-    form: "loginForm",
-    validate
-  })(Login)
-);
+export default connect(null, { loginUser })(loginForm);
