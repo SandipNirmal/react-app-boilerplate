@@ -20,7 +20,6 @@ const App = props => (
 );
 
 const mapStateToProps = ({ auth: { isLoggedIn } }) => {
-  console.log('props.isLoggedIn', isLoggedIn)
   return {
     isLoggedIn
   };

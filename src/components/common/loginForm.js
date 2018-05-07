@@ -1,105 +1,97 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, CircularProgress, TextField, Checkbox } from 'react-md';
 import { withFormik, Form } from 'formik';
 import Yup from 'yup';
 import { connect } from 'react-redux';
 
-import { notifyError } from './../../services/toastService';
+// import { notifyError } from './../../services/toastService';
 import { loginUser } from './../../actions/index';
 
-class Login extends Component {
-  onSubmit = values => {
-    this.props.loginUser(values);
-  };
+const Login = props => {
+  const {
+    values,
+    // errors,
+    // touched,
+    handleBlur,
+    // handleChange,
+    handleSubmit,
+    isSubmitting,
+    isValid
+  } = props;
 
-  render() {
-    const {
-      values,
-      errors,
-      touched,
-      handleBlur,
-      handleChange,
-      handleSubmit,
-      isSubmitting,
-      isValid
-    } = this.props;
+  // errors && notifyError(errors.username || errors.password);
 
-    console.log('isValid', isValid);
-
-    // error && notifyError(error);
-
-    return (
-      <div className="login-form">
-        <div>
-          <h2>Log In to your Account</h2>
-        </div>
-        <Form onSubmit={handleSubmit}>
-          {/* {error && (
+  return (
+    <div className="login-form">
+      <div>
+        <h2>Log In to your Account</h2>
+      </div>
+      <Form onSubmit={handleSubmit}>
+        {/* {error && (
             <div>
               <h5>{error}</h5>
             </div>
           )} */}
+        <div>
           <div>
-            <div>
-              <label>User Name</label>
+            <label>User Name</label>
 
-              <TextField
-                id="email"
-                type="email"
-                name="username"
-                value={values.username}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                required
-                placeholder="Enter Username"
-                errorText="This field is required."
-              />
-            </div>
-
-            <div>
-              <label>Password</label>
-              <TextField
-                id="password"
-                type="password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                required
-                placeholder="Enter Password"
-                errorText="This field is required."
-              />
-            </div>
-
-            <div>
-              {isSubmitting ? (
-                <CircularProgress id="login-progress" />
-              ) : (
-                <Button
-                  raised
-                  primary
-                  type="submit"
-                  disabled={!isValid || isSubmitting}
-                >
-                  Log In
-                </Button>
-              )}
-            </div>
-
-            <div>
-              <Checkbox
-                id="keepLoggedIn"
-                type="checkbox"
-                name="keepLoggedIn"
-                label="Keep me logged in"
-              />
-            </div>
+            <TextField
+              id="email"
+              type="email"
+              name="username"
+              value={values.username}
+              onChange={text => props.setFieldValue('username', text)}
+              onBlur={handleBlur}
+              required
+              placeholder="Enter Username"
+              errorText="This field is required."
+            />
           </div>
-        </Form>
-      </div>
-    );
-  }
-}
+
+          <div>
+            <label>Password</label>
+            <TextField
+              id="password"
+              type="password"
+              name="password"
+              value={values.password}
+              onChange={text => props.setFieldValue('password', text)}
+              onBlur={handleBlur}
+              required
+              placeholder="Enter Password"
+              errorText="This field is required."
+            />
+          </div>
+
+          <div>
+            {isSubmitting ? (
+              <CircularProgress id="login-progress" />
+            ) : (
+              <Button
+                raised
+                primary
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
+                Log In
+              </Button>
+            )}
+          </div>
+
+          <div>
+            <Checkbox
+              id="keepLoggedIn"
+              type="checkbox"
+              name="keepLoggedIn"
+              label="Keep me logged in"
+            />
+          </div>
+        </div>
+      </Form>
+    </div>
+  );
+};
 
 const loginForm = withFormik({
   mapPropsToValues: props => ({ username: '', password: '' }),
@@ -110,15 +102,7 @@ const loginForm = withFormik({
     password: Yup.string().required('Password is required!')
   }),
   handleSubmit: (values, { props, setSubmitting }) => {
-    loginUser(values).then(
-      res => {
-        setSubmitting(false);
-      },
-      err => {
-        console.log(err);
-        setSubmitting(false);
-      }
-    );
+    props.loginUser(values);
   },
   displayName: 'LoginForm'
 })(Login);

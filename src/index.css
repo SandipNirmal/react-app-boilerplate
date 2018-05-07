@@ -266,7 +266,7 @@ caption,
 *::before,
 *::after {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
 
 html {
