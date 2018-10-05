@@ -13,7 +13,7 @@ const authenticateUser = (username, pass) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
-        username: 'Sandip Nirmal',
+        username: 'sandipnirmal',
         loginToken: 'some#hashed#token#value'
       });
     }, 1500);
